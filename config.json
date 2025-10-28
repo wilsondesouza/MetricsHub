@@ -1,0 +1,12 @@
+{
+    "databases": {
+        "InventoryExample": "./ExampleDBs/inventory_example.db",
+        "TelemetryDemo": "./ExampleDBs/telemetry_demo.db",
+        "AnalyticsSandbox": "./ExampleDBs/analytics_sandbox.db"
+    },
+    
+    "pagination": {
+        "rows_per_page": 50
+    },
+    "refresh_interval": 30000
+}

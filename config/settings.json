@@ -1,0 +1,5 @@
+{
+    "port": 7050,
+    "refresh_interval": 10,
+    "theme": "dark"
+}

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://i.ibb.co/pjfzz7zg/metricshub.png" type="image/png">
+    <title>MetricsHub</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>🗄️ MetricsHub</h1>
+                <div class="header-actions">
+                    <select id="databaseSelector" class="database-selector">
+                        <option value="">Selecionar Banco de Dados...</option>
+                    </select>
+                    <button id="refreshBtn" class="btn btn-primary">🔄 Atualizar</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-container">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <h3>Tables</h3>
+                    <span id="tableCount" class="badge">0</span>
+                </div>
+                <div class="search-box">
+                    <input type="text" id="tableSearch" placeholder="Search tables..." />
+                </div>
+                <ul id="tableList" class="table-list">
+                    <li class="empty-state">Selecione um banco de dados para ver as tabelas</li>
+                </ul>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="content">
+                <!-- Tab Navigation -->
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="dashboard">📊 Dashboard</button>
+                    <button class="tab-btn" data-tab="data">📋 Visualizador de Dados</button>
+                </div>
+
+                <!-- Dashboard Tab -->
+                <div id="dashboard" class="tab-content active">
+                    <div class="dashboard-grid">
+                        <div class="minor-metrics">
+                            <div class="card geral">
+                                <h3>Visão Geral do Banco de Dados</h3>
+                                <div id="dbOverview" class="stats-grid">
+                                    <div class="stat-item">
+                                        <span class="stat-label">Banco de Dados</span>
+                                        <span class="stat-value" id="currentDb">-</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-label">Total de Tabelas</span>
+                                        <span class="stat-value" id="totalTables">0</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-label">Total de Linhas</span>
+                                        <span class="stat-value" id="totalRows">0</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Estatísticas da Tabela 
+                        <div class="card">
+                            <h3>Estatísticas da Tabela</h3>
+                            <canvas id="tableStatsChart"></canvas>
+                        </div>
+                        -->
+
+                            <!-- Status Atual do Sistema -->
+                            <div class="card" id="currentStatusCard" style="display: none;">
+                                <div class="chart-header">
+                                    <h3>Status Atual do Sistema</h3>
+                                    <button id="refreshGauges" class="btn btn-sm btn-primary">🔄 Atualizar</button>
+                                </div>
+                                <div class="gauges-container">
+                                    <div class="gauge-item">
+                                        <canvas id="cpuGauge"></canvas>
+                                        <div class="gauge-label">CPU</div>
+                                    </div>
+                                    <div class="gauge-item">
+                                        <canvas id="ramGauge"></canvas>
+                                        <div class="gauge-label">RAM</div>
+                                    </div>
+                                    <div class="gauge-item">
+                                        <canvas id="temperaturaGauge"></canvas>
+                                        <div class="gauge-label">Temperatura</div>
+                                    </div>
+                                    <div class="gauge-item">
+                                        <canvas id="potenciaGauge"></canvas>
+                                        <div class="gauge-label">Potência</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Detalhes da Tabela -->
+                        <div class="card full-width">
+                            <h3>Detalhes da Tabela</h3>
+                            <div id="tableDetails" class="table-details-grid"></div>
+                        </div>
+
+                        <!-- Comparação de Métricas    -->
+                        <div class="card full-width" id="metricsComparisonCard" style="display: none;">
+                            <div class="chart-header">
+                                <h3>Histórico de Métricas (Últimas 24 horas)</h3>
+                                <div class="chart-controls">
+                                    <button id="refreshMetrics" class="btn btn-sm btn-primary">🔄 Atualizar</button>
+                                </div>
+                            </div>
+                            <div class="metrics-grid">
+                                <div class="metric-chart-container">
+                                    <canvas id="cpuMetricChart"></canvas>
+                                </div>
+                                <div class="metric-chart-container">
+                                    <canvas id="ramMetricChart"></canvas>
+                                </div>
+                                <div class="metric-chart-container">
+                                    <canvas id="tempMetricChart"></canvas>
+                                </div>
+                                <div class="metric-chart-container">
+                                    <canvas id="powerMetricChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Viewer Tab -->
+                <div id="data" class="tab-content">
+                    <div class="data-viewer">
+                        <div class="data-header">
+                            <div class="table-info">
+                                <h3 id="currentTable">Selecionar uma tabela</h3>
+                                <span id="rowCount" class="badge">0 linhas</span>
+                            </div>
+                            <div class="pagination">
+                                <button id="prevPage" class="btn btn-sm" disabled>← Anterior</button>
+                                <span id="pageInfo">Página 1 de 1</span>
+                                <button id="nextPage" class="btn btn-sm" disabled>Próximo →</button>
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <table id="dataTable" class="data-table">
+                                <thead id="tableHead"></thead>
+                                <tbody id="tableBody">
+                                    <tr>
+                                        <td colspan="100" class="empty-state">Selecione uma tabela para visualizar os
+                                            dados</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="chart-section">
+                            <h3>Visualização de Dados</h3>
+                            <canvas id="dataChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div id="loading" class="loading-overlay" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+
+</html>
