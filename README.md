@@ -82,8 +82,6 @@ scripts/                geração dos bancos de exemplo
 docs/                   análise do original, arquitetura, backlog
 ```
 
-Detalhes em [`docs/02-arquitetura.md`](docs/02-arquitetura.md).
-
 ---
 
 ## Configuração
@@ -165,8 +163,6 @@ Erros seguem o envelope `{"error": {"code", "message", "request_id"}}`.
   `X-Content-Type-Options`, `Referrer-Policy` e `Permissions-Policy` padrão.
 - Container não-root, `cap_drop: ALL`, rootfs somente-leitura.
 
-Política completa, modelo de ameaça e checklist de deploy: [`SECURITY.md`](SECURITY.md).
-
 > **Antes de expor publicamente:** use `auth_mode=token` (ou SSO), TLS no proxy
 > reverso, monte bancos como `:ro` e defina `allow_embedding=false`.
 
@@ -203,12 +199,3 @@ Recomendações: TLS no proxy reverso, volume de bancos `:ro`,
 Os bancos são lidos no lugar — a aplicação **não** cria nem migra schemas.
 
 ---
-
-## Documentação
-
-| Documento | Conteúdo |
-|---|---|
-| [`docs/01-analise-do-codigo-original.md`](docs/01-analise-do-codigo-original.md) | funcionalidades, 10 falhas de segurança, bugs e problemas de UX do código original |
-| [`docs/02-arquitetura.md`](docs/02-arquitetura.md) | estrutura, camadas, decisões e contrato da API |
-| [`docs/03-melhorias-e-backlog.md`](docs/03-melhorias-e-backlog.md) | o que foi implementado, trade-offs e roadmap priorizado |
-| [`SECURITY.md`](SECURITY.md) | política de segurança e checklist de implantação |
