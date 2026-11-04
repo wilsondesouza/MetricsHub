@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "metricshub"
+version = "2.0.0"
+description = "MetricsHub — visualizador seguro e extensível de bancos SQLite"
+requires-python = ">=3.11"
+dependencies = [
+  "Flask>=3.1,<4",
+  "pydantic>=2.9,<3",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.3", "pytest-cov>=5.0", "ruff>=0.6", "flask-cors>=6.0,<7"]
+
+[tool.setuptools.packages.find]
+include = ["metricshub*"]
+
+[tool.setuptools.package-data]
+metricshub = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "S", "C4"]
+ignore = [
+    "S101",   # asserts são esperados em testes
+    "E501",   # largura de linha tratada pelo formatter
+    "S104",   # bind em 0.0.0.0 é intencional e documentado
+    "S603",   # subprocess só em tooling
+    "S608",   # SQL é montado apenas com identificadores já validados/citados
+    "B905",   # zip() sobre fontes de mesmo tamanho por construção
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S105", "S106", "S311"]

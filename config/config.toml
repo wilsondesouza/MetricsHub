@@ -1,0 +1,117 @@
+# ============================================================================
+# MetricsHub — configuração central
+# ----------------------------------------------------------------------------
+# Este arquivo é lido pelo backend (pydantic). Segredos NÃO devem ficar aqui:
+# use variáveis de ambiente (METRICHUB_API_TOKEN, etc.) ou um config.local.toml
+# ignorado pelo Git.
+# ============================================================================
+
+[server]
+host = "127.0.0.1"          # 0.0.0.0 permite acesso via proxy/container; restrinja em produção
+port = 7050
+debug = false
+workers = 1
+
+[security]
+# "loopback"  -> apenas 127.0.0.1 / ::1 acessam a API
+# "local"     -> loopback + rede privada (RFC1918/link-local). Bom para LAN e preview.
+# "token"     -> exige Authorization: Bearer <token> ou X-API-Token
+# "none"      -> SOMENTE para desenvolvimento isolado; emite aviso no log
+auth_mode = "local"
+# Permite que a UI seja embutida em iframe (preview de sandbox/IDE).
+# Em produção exposta ao público, defina false para enviar frame-ancestors 'none'.
+allow_embedding = true
+api_token = ""            # preferível definir via METRICHUB_API_TOKEN
+cors_origins = ["http://localhost:5173", "http://127.0.0.1:5173"]
+allow_downloads = true
+max_export_rows = 200000
+
+[security.rate_limit]
+enabled = true
+requests_per_minute = 240
+burst = 60
+
+[database]
+# Caminhos relativos são resolvidos a partir da raiz do repositório.
+read_only = true
+query_timeout_ms = 5000
+stats_row_limit = 20000      # amostragem p/ perfil de colunas em tabelas grandes
+count_cache_ttl_seconds = 30
+stats_cache_ttl_seconds = 120
+
+[pagination]
+default_page_size = 50
+max_page_size = 500
+
+[dashboard]
+refresh_interval_ms = 30000
+
+# ----------------------------------------------------------------------------
+# Bancos SQLite expostos pela aplicação.
+# O `id` é a chave usada na URL — o cliente NUNCA informa caminhos de arquivo.
+# ----------------------------------------------------------------------------
+[[databases]]
+id = "inventory"
+name = "InventoryExample"
+description = "Catálogo, fornecedores e movimentações de estoque"
+path = "sample_data/inventory_example.db"
+
+[[databases]]
+id = "telemetry"
+name = "TelemetryDemo"
+description = "Séries temporais de telemetria de host"
+path = "sample_data/telemetry_demo.db"
+
+[[databases]]
+id = "analytics"
+name = "AnalyticsSandbox"
+description = "Eventos, sessões e pedidos — inclui casos-limite (NULL, BLOB, tipos mistos)"
+path = "sample_data/analytics_sandbox.db"
+
+# ----------------------------------------------------------------------------
+# Fontes de métricas (gauges + histórico). Genérico: qualquer tabela de séries
+# temporais pode ser descrita aqui — nada é hardcoded no código.
+# ----------------------------------------------------------------------------
+[[metrics.sources]]
+id = "host"
+database = "telemetry"
+table = "sistema_info_media"
+timestamp_column = "timestamp"
+timestamp_format = "auto"     # auto | iso8601 | unixepoch | unixepoch_ms
+title = "Host de telemetria"
+
+[[metrics.sources.series]]
+key = "cpu"
+column = "cpu_media"
+label = "CPU"
+unit = "%"
+max = 100
+warn_at = 70
+crit_at = 90
+
+[[metrics.sources.series]]
+key = "ram"
+column = "ram_media"
+label = "RAM"
+unit = "MB"
+max = 2000
+warn_at = 1400
+crit_at = 1800
+
+[[metrics.sources.series]]
+key = "temperatura"
+column = "temperatura_media"
+label = "Temperatura"
+unit = "°C"
+max = 70
+warn_at = 50
+crit_at = 62
+
+[[metrics.sources.series]]
+key = "potencia"
+column = "potencia_media"
+label = "Potência"
+unit = "W"
+max = 15
+warn_at = 9
+crit_at = 13

@@ -1,0 +1,190 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Design tokens — contraste auditado (WCAG AA) em ambos os temas
+   ============================================================ */
+@layer base {
+  :root,
+  [data-theme='dark'] {
+    color-scheme: dark;
+    --surface-rgb: 11 15 20;
+    --surface-raised-rgb: 18 24 33;
+    --surface-sunken-rgb: 8 11 16;
+    --surface-hover-rgb: 24 32 43;
+    --border-rgb: 35 44 56;
+    --border-strong-rgb: 51 64 79;
+    --text-rgb: 232 237 244;
+    --text-subtle-rgb: 169 182 198;
+    --text-muted-rgb: 125 139 156;
+    --accent-rgb: 56 189 248;
+    --ok-rgb: 52 211 153;
+    --warn-rgb: 251 191 36;
+    --danger-rgb: 248 113 113;
+    --info-rgb: 167 139 250;
+    --surface: rgb(var(--surface-rgb));
+    --surface-raised: rgb(var(--surface-raised-rgb));
+    --surface-sunken: rgb(var(--surface-sunken-rgb));
+    --surface-hover: rgb(var(--surface-hover-rgb));
+    --border: rgb(var(--border-rgb));
+    --border-strong: rgb(var(--border-strong-rgb));
+    --text: rgb(var(--text-rgb));
+    --text-subtle: rgb(var(--text-subtle-rgb));
+    --text-muted: rgb(var(--text-muted-rgb));
+    --accent: rgb(var(--accent-rgb));
+    --accent-soft: rgba(56, 189, 248, 0.14);
+    --accent-ink: #04121c;
+    --ok: rgb(var(--ok-rgb));
+    --warn: rgb(var(--warn-rgb));
+    --danger: rgb(var(--danger-rgb));
+    --info: rgb(var(--info-rgb));
+    --grid: rgba(148, 163, 184, 0.12);
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 12px 32px -16px rgb(0 0 0 / 0.7);
+  }
+
+  [data-theme='light'] {
+    color-scheme: light;
+    --surface-rgb: 246 248 251;
+    --surface-raised-rgb: 255 255 255;
+    --surface-sunken-rgb: 238 242 247;
+    --surface-hover-rgb: 233 238 245;
+    --border-rgb: 219 227 236;
+    --border-strong-rgb: 194 204 217;
+    --text-rgb: 15 23 42;
+    --text-subtle-rgb: 70 86 107;
+    --text-muted-rgb: 93 107 126;
+    --accent-rgb: 3 105 161;
+    --ok-rgb: 4 120 87;
+    --warn-rgb: 180 83 9;
+    --danger-rgb: 185 28 28;
+    --info-rgb: 109 40 217;
+    --surface: rgb(var(--surface-rgb));
+    --surface-raised: rgb(var(--surface-raised-rgb));
+    --surface-sunken: rgb(var(--surface-sunken-rgb));
+    --surface-hover: rgb(var(--surface-hover-rgb));
+    --border: rgb(var(--border-rgb));
+    --border-strong: rgb(var(--border-strong-rgb));
+    --text: rgb(var(--text-rgb));
+    --text-subtle: rgb(var(--text-subtle-rgb));
+    --text-muted: rgb(var(--text-muted-rgb));
+    --accent: rgb(var(--accent-rgb));
+    --accent-soft: rgba(3, 105, 161, 0.1);
+    --accent-ink: #ffffff;
+    --ok: rgb(var(--ok-rgb));
+    --warn: rgb(var(--warn-rgb));
+    --danger: rgb(var(--danger-rgb));
+    --info: rgb(var(--info-rgb));
+    --grid: rgba(15, 23, 42, 0.08);
+    --shadow: 0 1px 2px rgb(15 23 42 / 0.06), 0 12px 32px -18px rgb(15 23 42 / 0.25);
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-surface text-ink antialiased;
+    font-feature-settings: 'cv11', 'ss01';
+    min-height: 100dvh;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-surface;
+  }
+
+  ::selection {
+    background: var(--accent-soft);
+  }
+
+  /* Scrollbars discretas, mas sempre visíveis o suficiente para orientação */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 999px;
+    border: 2px solid var(--surface);
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-xl border bg-surface-raised;
+    box-shadow: var(--shadow);
+  }
+
+  .btn {
+    @apply inline-flex select-none items-center justify-center gap-2 rounded-lg border border-transparent
+      px-3 py-1.5 text-sm font-medium transition-colors
+      disabled:pointer-events-none disabled:opacity-45;
+  }
+  .btn-primary {
+    @apply bg-accent text-accent-ink hover:brightness-110;
+  }
+  .btn-ghost {
+    @apply border-border bg-transparent text-ink hover:bg-surface-hover;
+  }
+  .btn-danger {
+    @apply border-danger/40 bg-danger/10 text-danger hover:bg-danger/20;
+  }
+  .btn-sm {
+    @apply px-2 py-1 text-xs;
+  }
+  .btn-icon {
+    @apply h-8 w-8 p-0;
+  }
+
+  .input {
+    @apply w-full rounded-lg border bg-surface-sunken px-3 py-2 text-sm text-ink
+      placeholder:text-muted focus:border-accent focus:outline-none
+      focus:ring-2 focus:ring-accent/30;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-md border bg-surface-sunken px-1.5 py-0.5
+      text-[11px] font-medium text-subtle;
+  }
+
+  .skeleton {
+    @apply relative overflow-hidden rounded-md bg-surface-hover;
+  }
+  .skeleton::after {
+    content: '';
+    @apply absolute inset-0 -translate-x-full;
+    background: linear-gradient(90deg, transparent, var(--grid), transparent);
+    animation: shimmer 1.4s infinite;
+  }
+
+  .table-sticky th {
+    @apply sticky top-0 z-10 bg-surface-raised;
+  }
+
+  .link {
+    @apply text-accent underline decoration-accent/40 underline-offset-2 hover:decoration-accent;
+  }
+}
+
+/* Recharts: remove o contorno de foco padrão dos SVGs interativos */
+.recharts-wrapper :focus {
+  outline: none;
+}

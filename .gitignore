@@ -1,90 +1,53 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-node_modules
-dist
-dist-ssr
-*.local
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
 # Python
 __pycache__/
 *.py[cod]
-*$py.class
-*.pyo
-*.pyd
-
-# Virtual environments
-venv/
-ENV/
-env/
+*.egg-info/
 .venv/
-env.bak/
-venv.bak/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+htmlcov/
+.coverage
+coverage.xml
 
-# Environments and secret/config files (local)
+# Node / build
+node_modules/
+frontend/dist/
+webapp/
+frontend/.vite/
+*.tsbuildinfo
+
+# Segredos e configuração local
 .env
 .env.*
-instance/
-local_settings.py
-credentials.json
-secrets.json
-
-# Private keys, certificates
+!.env.example
+config/config.local.toml
 *.key
 *.pem
 *.crt
 *.p12
 
-# Testing, coverage and build artifacts
-.coverage
-.coverage.*
-htmlcov/
-coverage.xml
-nosetests.xml
-test-results/
-.pytest_cache/
-.mypy_cache/
-pip-wheel-metadata/
-*.egg-info/
-build/
-dist/
-eggs/
-parts/
-sdist/
-var/
-*.egg
+# Bancos de dados (gerados por `make seed`; monte os seus via config)
+sample_data/*.db
+*.db-wal
+*.db-shm
 
-# Jupyter
-.ipynb_checkpoints
-
-# OS generated files (Windows / macOS)
+# Logs e temporários
+*.log
+logs/
+tmp/
+.DS_Store
 Thumbs.db
-ehthumbs.db
-Desktop.ini
 
-# Misc / editor history / DBs
-.history/
-*.sqlite3
-*.db
+# IDE
+.vscode/*
+!.vscode/extensions.json
+.idea/
 
-# Keep IDE settings file exception if needed, but ignore others
-.vscode/settings.json
-.vscode/launch.json
-
+# Outros artefatos
+*.zip
+backend/tests
+docs
+*.md
+!README.md

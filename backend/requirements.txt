@@ -1,0 +1,6 @@
+# Runtime
+Flask>=3.1,<4
+pydantic>=2.9,<3
+# Opcional: só necessário se o frontend for servido de outra origem (ex.: Vite em dev)
+flask-cors>=6.0,<7
+python-dotenv

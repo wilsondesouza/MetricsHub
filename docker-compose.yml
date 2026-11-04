@@ -1,0 +1,29 @@
+services:
+  metricshub:
+    build: .
+    image: metricshub:latest
+    container_name: metricshub
+    ports:
+      - "7050:7050"
+    environment:
+      METRICHUB_AUTH_MODE: ${METRICHUB_AUTH_MODE:-local}
+      METRICHUB_API_TOKEN: ${METRICHUB_API_TOKEN:-}
+      METRICHUB_ALLOW_RAW_SQL: ${METRICHUB_ALLOW_RAW_SQL:-0}
+    volumes:
+      # Bancos SQLite: sempre monte como somente-leitura.
+      - ./sample_data:/app/sample_data:ro
+      # Configuração e bancos adicionais (ajuste conforme seu ambiente)
+      - ./config:/app/config:ro
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:7050/api/health', timeout=2)"]
+      interval: 30s
+      timeout: 3s
+      retries: 3

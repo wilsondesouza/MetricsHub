@@ -1,0 +1,30 @@
+# Crie o arquivo de servico
+
+sudo nano /etc/systemd/system/metricshub.service
+
+"
+[Unit]
+Description=MetricsHub - Visualizador de Banco de Dados SQLite
+After=network.target
+
+[Service]
+User=orangepi
+Group=orangepi
+WorkingDirectory=/caminho/para/MetricsHub/
+Environment="PATH=/caminho/para/MetricsHub/venv/bin"
+ExecStart=/caminho/para/MetricsHub/venv/bin/python3 -m flask --app backend.metricshub:create_app run --host 127.0.0.1 --port 7050 2> /dev/null
+Restart=always
+
+
+[Install]
+WantedBy=default.target
+"
+
+# Reiniciar servico de sistema
+sudo systemctl daemon-reexec
+sudo systemctl daemon-reload
+sudo systemctl enable metricshub.service
+sudo systemctl start metricshub.service
+sudo systemctl status metricshub.service
+
+sudo journalctl -u metricshub -f
