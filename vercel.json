@@ -8,8 +8,7 @@
     "frontend": {
       "root": "frontend",
       "framework": "vite",
-      "config": {
-        "distDir": "../webapp"
+      "outputDirectory": "../webapp"
       }
     }
   },
