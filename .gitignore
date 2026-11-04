@@ -32,6 +32,9 @@ config/config.local.toml
 sample_data/*.db
 *.db-wal
 *.db-shm
+!analytics_sandbox.db
+!inventory_example.db
+!telemetry_demo.db
 
 # Logs e temporários
 *.log
