@@ -17,7 +17,7 @@ export default defineConfig({
   build: {
     // O build é publicado em webapp/ na raiz do repositório: é o diretório que o
     // Flask serve em produção (uma única origem para API + SPA).
-    outDir: '../webapp',
+    outDir: 'dist',
     emptyOutDir: true,
     sourcemap: process.env.NODE_ENV !== 'production',
     chunkSizeWarningLimit: 900,
